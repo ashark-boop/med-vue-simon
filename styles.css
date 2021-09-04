@@ -1,0 +1,176 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+div, input, label{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;   
+}
+
+/* Squares style */
+.square{
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.red{
+    background-color: rgba(255, 0, 0, 0.4);
+}
+
+.green{
+    background-color: rgba(0, 128, 0, 0.4);
+}
+
+.yellow{
+    background-color: rgba(255, 255, 0, 0.4);
+}
+
+.blue{
+    background-color: rgba(0, 0, 255, 0.4);
+}
+
+/* Light colors. Shows when square active */
+.light-red{
+    background-color: rgb(255, 0, 0);
+}
+
+.light-green{
+    background-color: rgb(0, 128, 0);
+}
+
+.light-yellow{
+    background-color: rgb(255, 255, 0);
+}
+
+.light-blue{
+    background-color: rgb(0, 0, 255);
+}
+
+/* Game field styles */
+
+.game-field, .game-menu{
+    width: 310px;
+    height: 250px;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 20px 50px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+/* Game menu */
+
+.game-menu, .lose-message{
+    font-family: monospace, sans-serif;
+    font-size: 18px;
+
+    padding: 20px;
+}
+
+.game-difficult{
+    display: flex;
+    flex-direction: column;
+}
+
+/* Radio styles */
+.radio-wrap{
+    margin: 5px 0 0 0;
+}
+
+.difficult-radio-input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    margin: 0 10px 0 0;
+    
+    width: 15px;
+    height: 15px;
+    
+    border-radius: 3px;
+    border: 2px solid rgb(97, 97, 97);
+    outline: none;
+}
+
+.difficult-radio-input:checked{
+    border: 2px solid black;
+}
+
+.input-hard:checked{
+    background-color: red;
+}
+
+.input-medi:checked{
+    background-color: yellow;
+}
+
+.input-easy:checked{
+    background-color: green;
+}
+
+/* Game info styles */
+.game-info{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Game score */
+.game-score{
+    margin: 0 0 5px 10px;
+}
+
+/* Game-start button */
+.game-start{
+    width: fit-content;
+    padding: 3px 8px;
+
+    border-radius: 3px;
+    border: 2px solid rgb(97, 97, 97);
+
+    cursor: pointer;
+
+    display: inline-block;
+}
+
+.game-start:active{
+    background-color:rgb(97, 97, 97);
+    color: white;
+}
+
+
+/* Screens */
+.screen, .menu-screen{ 
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    order: 999;
+
+    display: none;
+}
+
+.menu-screen{
+    width: 310px;
+    height: 200px;
+}
+
+.active-screen{
+    display: inline-block;
+}
+
+/* Message */
+.lose-message{
+    width: 100%;
+    text-align: center;
+}

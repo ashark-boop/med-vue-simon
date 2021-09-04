@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon The Game</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="game-wrapper">
+            <div class="game-field">
+                <div class="square red"     v-on:click="clickSquare(0)" ref="square1"></div>
+                <div class="square yellow"  v-on:click="clickSquare(1)" ref="square2"></div>
+                <div class="square green"   v-on:click="clickSquare(2)" ref="square3"></div>
+                <div class="square blue"    v-on:click="clickSquare(3)" ref="square4"></div>
+            </div>
+            <div class="game-menu">
+                <div class="menu-screen" ref="menuScreen"></div>
+                <form class="game-difficult">
+                    <p>Сложность:</p>
+                    <div class="radio-wrap">
+                        <input type="radio" id="difficRadio1"
+                        name="diffic" value="0" 
+                        class="difficult-radio-input input-easy" 
+                        checked
+                        v-on:click="this.gameMode = 1.5">
+
+                        <label for="difficRadio1">Легкая</label>
+                    </div>
+                    <div class="radio-wrap">
+                        <input type="radio" id="difficRadio2"
+                        name="diffic" value="1" 
+                        class="difficult-radio-input input-medi"
+                        v-on:click="this.gameMode = 1">
+
+                        <label for="difficRadio2">Нормальная</label>
+                    </div>
+                    <div class="radio-wrap">
+                        <input type="radio" id="difficRadio3"
+                        name="diffic" value="2" 
+                        class="difficult-radio-input input-hard"
+                        v-on:click="this.gameMode = 0.4">
+
+                        <label for="difficRadio3">Сложная</label>
+                    </div>
+                </form>
+                <div class="game-info">
+                    <div class="game-score">Счет:{{ score }}</div>
+                    <div class="game-score">Рекорд:{{ bestScore }}</div>
+                    
+                    <div class="game-start" v-on:click="gameStart">Начать</div>
+                </div>
+                <div class="lose-message" v-if="lose">Вы проиграли!</div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- Vue CDN -->
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+const App = {
+    data() {
+        return {
+            play: false,
+            lose: false,
+            bestScore: 0,
+            score: 0,
+            gameMode: 1.5,
+            order: '',
+            position: 0,
+            colors:[
+                'red',
+                'yellow',
+                'green',
+                'blue'  
+            ],
+            music: [
+                new Audio('sounds/sounds_1.mp3'),
+                new Audio('sounds/sounds_2.mp3'),
+                new Audio('sounds/sounds_3.mp3'),
+                new Audio('sounds/sounds_4.mp3')
+            ]
+        }
+    },
+    methods: {
+        gameStart(){
+            this.play = true;
+            this.lose = false;
+            this.$refs.menuScreen.classList.add("active-screen");
+            this.order = '' + Math.floor(Math.random() * 4);
+            this.highlightSquares();
+        },
+
+        nextRound(){
+            this.order = this.order + Math.floor(Math.random() * 4);
+            this.score++;
+            this.position = 0;
+
+            this.highlightSquares();
+        },
+
+        clickSquare(number){
+            if (!this.play) { return };
+
+            let squares = document.querySelectorAll('.square');
+            if(this.order[this.position] == number){
+                this.position == this.order.length - 1 ? this.nextRound() : this.position++;
+            }else{
+                this.gameOver();
+            }
+
+            squares[number].classList.add(`light-${this.colors[number]}`);
+            setTimeout(() => {squares[number].classList.remove(`light-${this.colors[number]}`)}, 100);
+
+            this.music[number].play();
+            
+        },
+
+        highlightSquares(){
+            this.play = false;
+            iterator = 0;
+            let squares = document.querySelectorAll('.square');
+            let round = this.order;
+
+            let interShow = setInterval(() => {
+                number = round[iterator];
+
+                squares[number].classList.add(`light-${this.colors[number]}`);
+                setTimeout(() => {squares[number].classList.remove(`light-${this.colors[number]}`)}, this.gameMode*1000-100);
+
+                this.music[number].play();
+                
+                iterator++;
+            }, this.gameMode*1000);
+            
+            setTimeout(() => {
+                this.play = true;
+                clearInterval(interShow);
+            }, round.length*1000*this.gameMode)
+        },
+
+        gameOver(){
+            this.play = false;
+            this.bestScore = this.bestScore < this.score ? this.score : this.bestScore ;
+            this.score = 0;
+            this.order = '';
+            this.position = 0;
+            this.lose = true;
+
+            this.$refs.menuScreen.classList.remove("active-screen");
+        }
+    }
+}
+
+Vue.createApp(App).mount('#app')
+</script>
+</html>
